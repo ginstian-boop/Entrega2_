@@ -9,8 +9,19 @@ public class PlayerMovementModel : MonoBehaviour
 
     // Referencia al Rigidbody del personaje.
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Collider playerCollider;
+    [Header("Salto")]
+    [SerializeField] private float jumpForce = 7f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundCheckExtra = 0.1f;
+    
+
+    private bool _isGrounded;
 
     [Header("Movimiento")]
+
+    //fuerza de salto
+ 
 
     // Velocidad de movimiento del personaje.
     [SerializeField] private float moveSpeed = 5f;
@@ -26,6 +37,8 @@ public class PlayerMovementModel : MonoBehaviour
     // Esto lo usaremos para girar visualmente al personaje.
     public Vector3 CurrentMoveDirection { get; private set; }
 
+    public bool IsGrounded => _isGrounded;
+
     private void Start()
     {
         // Revisamos referencias importantes.
@@ -38,17 +51,39 @@ public class PlayerMovementModel : MonoBehaviour
         {
             Debug.LogError("[PlayerMovementModel] Falta asignar Rigidbody en el Inspector.");
         }
+        if (playerInputController == null) Debug.LogError("Falta PlayerInputController.");
+    
+    }
+
+
+    private void Update()
+    {
+        if (playerInputController.JumpTriggered && _isGrounded)
+        {
+            Jump();
+        }
     }
 
     private void FixedUpdate()
     {
+        CheckGround();
         // Mueve el rigidbody.
         Move();
 
         // Actualiza velocidad y dirección real.
         UpdateVelocityData();
     }
+    private void CheckGround()
+    {
+        // Calculamos la distancia desde el centro hasta la base del colisionador
+        float rayLength = playerCollider.bounds.extents.y + groundCheckExtra;
 
+        // Lanzamos el rayo desde el centro hacia abajo
+        _isGrounded = Physics.Raycast(transform.position, Vector3.down, rayLength, groundLayer);
+
+        // Debug visual: Verde si toca suelo, Rojo si está en el aire
+        Debug.DrawRay(transform.position, Vector3.down * rayLength, _isGrounded ? Color.green : Color.red);
+    }
     private void Move()
     {
         // Si falta algo, no seguimos.
@@ -58,7 +93,7 @@ public class PlayerMovementModel : MonoBehaviour
         Vector2 input = playerInputController.MoveInput;
 
         // Convertimos el input 2D a dirección 3D.
-        Vector3 moveDirection = new Vector3(input.x, 0f, input.y);
+        Vector3 moveDirection = new Vector3(input.x, 0f , input.y);
 
         // Si la magnitud es mayor a 1, normalizamos
         // para evitar que en diagonal se mueva más rápido.
@@ -78,6 +113,7 @@ public class PlayerMovementModel : MonoBehaviour
             moveDirection.x * moveSpeed,
             rb.linearVelocity.y,
             moveDirection.z * moveSpeed
+            
         );
 
         // Aplicamos la velocidad al Rigidbody.
@@ -90,7 +126,17 @@ public class PlayerMovementModel : MonoBehaviour
             Debug.Log($"[PlayerMovementModel] Velocidad aplicada al Rigidbody: {rb.linearVelocity}");
         }
     }
+    private void Jump()
+    {
+        // Resetear velocidad vertical antes de aplicar el impulso
+        // Esto asegura que el salto siempre llegue a la misma altura
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
+        // Aplicamos el salto como un impulso instantáneo
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        Debug.Log("[PlayerMovementModel] Salto ejecutado.");
+    }
     private void UpdateVelocityData()
     {
         // Si no hay rigidbody, no seguimos.

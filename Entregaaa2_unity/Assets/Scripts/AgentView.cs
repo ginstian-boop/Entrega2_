@@ -7,7 +7,9 @@ public class PlayerAnimatorView : MonoBehaviour
     {
         Idle,
         Walk,
-        Run
+        Run,
+        Jump,
+        Falling
     }
 
     [Header("Referencias")]
@@ -27,6 +29,7 @@ public class PlayerAnimatorView : MonoBehaviour
 
     // Nombre del parámetro float del Animator.
     [SerializeField] private string speedParameter = "Speed";
+
 
     [Header("Umbrales")]
 
@@ -111,6 +114,7 @@ public class PlayerAnimatorView : MonoBehaviour
         {
             CurrentState = AnimationState.Run;
         }
+    
 
         // Debug del estado.
         if (speed > 0f)
