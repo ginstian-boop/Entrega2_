@@ -16,7 +16,7 @@ public class PlayerMovementModel : MonoBehaviour
     [SerializeField] private float groundCheckExtra = 0.1f;
     
 
-    private bool _isGrounded;
+    public bool _isGrounded;
 
     [Header("Movimiento")]
 

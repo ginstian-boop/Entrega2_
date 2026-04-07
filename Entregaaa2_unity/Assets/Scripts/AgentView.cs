@@ -29,6 +29,8 @@ public class PlayerAnimatorView : MonoBehaviour
 
     // Nombre del parámetro float del Animator.
     [SerializeField] private string speedParameter = "Speed";
+    [SerializeField] private string isGroundedParameter = "IsGrounded";
+    [SerializeField] private string yVelocityParameter = "YVelocity";
 
 
     [Header("Umbrales")]
@@ -49,11 +51,15 @@ public class PlayerAnimatorView : MonoBehaviour
 
     // Hash del parámetro Speed.
     private int _speedHash;
+    private int _isGroundedHash;
+    private int _yVelocityHash;
 
     private void Start()
     {
         // Convertimos el nombre del parámetro a hash.
         _speedHash = Animator.StringToHash(speedParameter);
+        _isGroundedHash = Animator.StringToHash(isGroundedParameter);
+        _yVelocityHash = Animator.StringToHash(yVelocityParameter);
 
         // Revisamos referencias.
         if (playerMovementModel == null)
@@ -90,29 +96,24 @@ public class PlayerAnimatorView : MonoBehaviour
 
         // Tomamos la velocidad actual desde el modelo.
         float speed = playerMovementModel.CurrentSpeed;
+        bool grounded = playerMovementModel.IsGrounded;
 
+        float yVel = playerMovementModel.GetComponent<Rigidbody>().linearVelocity.y;
         // La enviamos al Animator.
         animator.SetFloat(_speedHash, speed);
+        animator.SetBool(_isGroundedHash, grounded);
+        animator.SetFloat(_yVelocityHash, yVel);
 
         // Debug de Animator.
-        if (speed > 0f)
+        if (!grounded)
         {
-            Debug.Log($"[PlayerAnimatorView] Speed enviada al Animator: {speed}");
-            Debug.Log($"[PlayerAnimatorView] Speed leída dentro del Animator: {animator.GetFloat(_speedHash)}");
-        }
-
-        // Determinamos el estado lógico actual.
-        if (speed <= idleThreshold)
-        {
-            CurrentState = AnimationState.Idle;
-        }
-        else if (speed < runThreshold)
-        {
-            CurrentState = AnimationState.Walk;
+            CurrentState = yVel > 0 ? AnimationState.Jump : AnimationState.Falling;
         }
         else
         {
-            CurrentState = AnimationState.Run;
+            if (speed <= idleThreshold) CurrentState = AnimationState.Idle;
+            else if (speed < runThreshold) CurrentState = AnimationState.Walk;
+            else CurrentState = AnimationState.Run;
         }
     
 
