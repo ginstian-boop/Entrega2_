@@ -11,7 +11,7 @@ public class PlayerMovementModel : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider playerCollider;
     [Header("Salto")]
-    [SerializeField] private float jumpForce = 7f;
+    [SerializeField] private float jumpForce = 6.7f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckExtra = 0.1f;
     

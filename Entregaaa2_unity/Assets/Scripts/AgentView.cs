@@ -100,9 +100,9 @@ public class PlayerAnimatorView : MonoBehaviour
 
         float yVel = playerMovementModel.GetComponent<Rigidbody>().linearVelocity.y;
         // La enviamos al Animator.
-        animator.SetFloat(_speedHash, speed);
-        animator.SetBool(_isGroundedHash, grounded);
-        animator.SetFloat(_yVelocityHash, yVel);
+        animator.SetFloat("Speed", speed);
+        animator.SetBool("Isgrounded", grounded);
+        animator.SetFloat("Yvelocity", yVel);
 
         // Debug de Animator.
         if (!grounded)
@@ -135,6 +135,7 @@ public class PlayerAnimatorView : MonoBehaviour
         // Si no hay dirección, no rotamos.
         if (moveDirection == Vector3.zero) return;
 
+        moveDirection.y = 0;
         // Calculamos la rotación objetivo basada en la dirección.
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
 
