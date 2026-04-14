@@ -1,16 +1,28 @@
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI; // Necesario para usar Slider
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Referencias")]
+
+    [SerializeField]
+    private TMP_Text vidaText;
+    [SerializeField]
+   private TMP_Text escudoText;
+
+    public trampas _trap;
+
+    public Stats _stats;
+
+
+   void Restarvida()
     {
-        
+        if 
+
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }

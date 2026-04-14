@@ -8,10 +8,12 @@ public class trampas : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Osaka"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             _stats.TakeDamage(1f);
 
+                transform.position = new Vector3(0, 0, 0); // Or a stored startPosition
         }
+        
     }
 }
