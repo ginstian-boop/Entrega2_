@@ -1,5 +1,6 @@
 using UnityEngine;                  // Librería principal de Unity.
 using UnityEngine.InputSystem;      // Librería del nuevo Input System.
+using UnityEngine.SceneManagement;
 
 public class PlayerInputController : MonoBehaviour
 {
@@ -58,6 +59,14 @@ public class PlayerInputController : MonoBehaviour
             JumpTriggered = _jumpAction.WasPressedThisFrame();
         
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+
+            QuitGame();
+
+
+        }
     }
 
     private void OnDisable()
@@ -73,5 +82,13 @@ public class PlayerInputController : MonoBehaviour
             _jumpAction.Disable();
             Debug.Log("[PlayerInputController] Acción 'Jump' deshabilitada.");
         }
+    }
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

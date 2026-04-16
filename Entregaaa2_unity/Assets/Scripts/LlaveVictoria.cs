@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LlaveVictoria : MonoBehaviour
 {
@@ -11,11 +13,13 @@ public class LlaveVictoria : MonoBehaviour
 
             if (ui != null)
             {
-                ui.MostrarVictoria();
+                SceneManager.LoadScene(1);
             }
 
             // Destruimos la llave o la desactivamos
             gameObject.SetActive(false);
         }
     }
+
+    
 }
