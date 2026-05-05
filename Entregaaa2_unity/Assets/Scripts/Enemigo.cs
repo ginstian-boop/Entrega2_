@@ -3,9 +3,12 @@ using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class Enemigo : MonoBehaviour
-{
 
+{
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private Transform characterVisual;
     [SerializeField] private Transform player; // Arrastra aquí al jugador desde el editor
+    [SerializeField] private float rotationSpeed = 50f;
 
     private NavMeshAgent agent;
 
@@ -22,14 +25,41 @@ public class Enemigo : MonoBehaviour
             // Le indica al agente que se mueva hacia la posición del jugador
             agent.SetDestination(player.position);
         }
+        UpdateRotation();
+
+    
     }
     private void OnCollisionEnter(Collision collision)
     {
-        // Comprobamos si el objeto que colisiona tiene la etiqueta "Player"
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            SceneManager.LoadScene(0);
 
+    }
+    private void UpdateRotation()
+    {
+
+        Vector3 horizontalVelocity = rb.linearVelocity;
+        // Tomamos la dirección actual del movimiento.
+        Vector3 moveDirection = horizontalVelocity;
+
+        // Si no hay dirección, no rotamos.
+        if (moveDirection == Vector3.zero) return;
+
+        moveDirection.y = 0;
+        // Calculamos la rotación objetivo basada en la dirección.
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+
+        // Rotamos suavemente hacia la dirección deseada.
+        characterVisual.rotation = Quaternion.Slerp(
+            characterVisual.rotation,
+            targetRotation,
+            rotationSpeed * Time.deltaTime
+        );
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+
+            SceneManager.LoadScene(0);
         }
     }
 }
