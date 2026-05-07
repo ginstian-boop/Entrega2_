@@ -1,17 +1,30 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
-
+using System.Collections;
 public class Enemigo : MonoBehaviour
 
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform characterVisual;
     [SerializeField] private Transform player; // Arrastra aquí al jugador desde el editor
-    [SerializeField] private float rotationSpeed = 50f;
+    [SerializeField] private float rotationSpeed = 150f;
 
     private NavMeshAgent agent;
 
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+ 
+
+                SceneManager.LoadScene(0);
+            
+
+        }
+    }
 
     void Start()
     {
@@ -27,12 +40,12 @@ public class Enemigo : MonoBehaviour
         }
         UpdateRotation();
 
-    
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
+ 
+
 
     }
+
+    
     private void UpdateRotation()
     {
 
@@ -54,14 +67,8 @@ public class Enemigo : MonoBehaviour
             rotationSpeed * Time.deltaTime
         );
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
 
-            SceneManager.LoadScene(0);
-        }
-    }
 }
+
 
 
