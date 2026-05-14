@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Collections;
-public class Enemigo : MonoBehaviour
+public class tETORUN : MonoBehaviour
 
 {
     [SerializeField] private Rigidbody rb;
@@ -18,7 +18,7 @@ public class Enemigo : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-           
+
             SceneManager.LoadScene(0);
         }
     }
@@ -37,12 +37,12 @@ public class Enemigo : MonoBehaviour
         }
         UpdateRotation();
 
- 
+
 
 
     }
 
-    
+
     private void UpdateRotation()
     {
 
