@@ -18,8 +18,8 @@ public class Enemigo : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-           
-            SceneManager.LoadScene(0);
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
