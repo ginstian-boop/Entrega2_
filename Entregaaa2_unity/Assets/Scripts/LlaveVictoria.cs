@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class LlaveVictoria : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnColliderEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {

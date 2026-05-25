@@ -18,6 +18,12 @@ public class PlayerMovementModel : MonoBehaviour
 
     public bool _isGrounded;
 
+public float MoveSpeed 
+{ 
+    get => moveSpeed; 
+    set => moveSpeed = value; 
+}
+
     [Header("Movimiento")]
 
     //fuerza de salto
