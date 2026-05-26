@@ -4,22 +4,19 @@ using UnityEngine.SceneManagement;
 
 public class LlaveVictoria : MonoBehaviour
 {
-    private void OnColliderEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+
         {
-            // Buscamos el UIManager en la escena y llamamos a la función de ganar
-            UIManager ui = Object.FindFirstObjectByType<UIManager>();
-
-            if (ui != null)
+            if (other.CompareTag("Player"))
             {
-                SceneManager.LoadScene(1);
-            }
 
-            // Destruimos la llave o la desactivamos
-            gameObject.SetActive(false);
+                SceneManager.LoadScene(1);
+
+
+                // Destruimos la llave o la desactivamos
+                gameObject.SetActive(false);
+            }
         }
     }
-
-    
 }
